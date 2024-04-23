@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -6,10 +6,12 @@ import Child from "./child";
 import { ColourContextProvider } from "./context/colour-context-provider";
 import ColourChildOne from "./context/colour-child-one";
 import ColourChildTwo from "./context/colour-child-two";
+import ReducerExample from "./reducer-example";
 
 function App() {
   const [showComponent, setShowComponent] = useState(true);
   const [count, setCount] = useState(0);
+  const ref = useRef();
 
   useEffect(() => {
     console.log("Count effect run: ", count);
@@ -21,6 +23,11 @@ function App() {
 
   const decrement = useCallback(() => {
     setCount((prev) => prev - 1);
+  }, []);
+
+  const onCalculateSize = useCallback(() => {
+    console.log(ref.current);
+    console.log("My width is: ", ref.current.offsetWidth);
   }, []);
 
   return (
@@ -56,6 +63,15 @@ function App() {
           <ColourChildOne />
           <ColourChildTwo />
         </div>
+
+        <hr />
+        <h2>Ref</h2>
+        <textarea ref={ref} rows={5} placeholder="This is a text area" />
+        <button onClick={onCalculateSize}>What is my size?</button>
+
+        <hr />
+        <h2>Reducer</h2>
+        <ReducerExample />
       </main>
     </ColourContextProvider>
   );
